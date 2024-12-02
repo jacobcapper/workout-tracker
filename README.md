@@ -50,11 +50,6 @@ Create the static/qr/ Directory:
 ```bash
 mkdir -p static/qr
 ```
-
-Generate user-specific QR codes with:
-```bash
-python3 qr_generator.py
-```
 ▶️ Run the Application
 
 Start the Flask server by executing:
