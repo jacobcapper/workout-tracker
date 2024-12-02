@@ -1,4 +1,4 @@
-rom flask import Flask, request, jsonify, send_from_directory, render_template
+from flask import Flask, request, jsonify, send_from_directory, render_template
 import sqlite3
 from datetime import datetime
 
@@ -69,3 +69,4 @@ def qr_page():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
+
