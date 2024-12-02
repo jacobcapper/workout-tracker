@@ -95,6 +95,28 @@ JSON Payload:
 }
 ```
 
+How to Move to a Production-Ready Server:
+
+If you're just testing or using this app on your local network (as a personal project or for internal use), you can continue using the development server.
+
+If you plan to deploy this on a public-facing server or expect higher traffic, here's what you can do:
+
+    Install Gunicorn (a popular WSGI server for Flask):
+
+pip3 install gunicorn
+
+Run your Flask app with Gunicorn: Instead of using python3 app.py, run the following:
+
+    gunicorn -b 0.0.0.0:5000 app:app
+
+    This tells Gunicorn to bind to all IP addresses (0.0.0.0) and run on port 5000. This will give you better performance, handle multiple requests concurrently, and avoid the development server warning.
+
+    Set up Reverse Proxy (Optional): If you want to deploy the app behind a web server (like Nginx or Apache) for better security, load balancing, and more, you can configure that as well.
+
+In Summary:
+
+    For local testing or personal use, you don't need to worry about the warning.
+    For production, switch to a WSGI server like Gunicorn to ensure better performance and scalability.
 
 
 
