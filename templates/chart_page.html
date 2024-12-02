@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Workout Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Workout Tracker - Month {{ month }} / {{ year }}</h1>
+
+    <!-- Chart.js Chart -->
+    <canvas id="workoutChart" width="400" height="200"></canvas>
+    <script>
+        var ctx = document.getElementById('workoutChart').getContext('2d');
+        var workoutChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [{% for user in users %}'{{ user[1] }}'{% if not loop.last %}, {% endif %}{% endfor %}],
+                datasets: [{
+                    label: 'Workouts Completed',
+                    data: [{% for user in users %}{{ user[2] }}{% if not loop.last %}, {% endif %}{% endfor %}],
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+    <br>
+    <a href="/">Back to Home</a> | <a href="/qr_page">View QR Codes</a>
+</body>
+</html>
