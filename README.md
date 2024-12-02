@@ -10,7 +10,19 @@ A simple workout tracker using QR codes.
 - 🔄 Scan QR codes via an API to log workouts.
 
 ---
+## ⚙️ Prerequisites
 
+Before you start, make sure you have the following:
+
+- A **Debian-based server** (such as Ubuntu or Debian itself).
+- **Python 3** and **pip** installed.
+- **Git** to clone the repository.
+- The required Python libraries:  
+  Install the dependencies using `pip`:
+  
+  ```bash
+  pip install qrcode[pil] flask
+  ```
 ## 💻 Installation
 
 Clone the repository to your local machine using Git:
