@@ -58,15 +58,59 @@ def view_history(user_id):
 
     return jsonify({"history": [scan[0] for scan in scans]})
 
-# QR Codes page for Dakboard
+# Home page with workout chart and QR codes summary
+@app.route('/')
+def home():
+    conn = sqlite3.connect('workout_tracker.db')
+    cursor = conn.cursor()
+
+    # Fetch users and their workout counts for the current month
+    month = datetime.now().month
+    year = datetime.now().year
+    users = cursor.execute('''
+        SELECT u.id, u.name, COUNT(s.id) as workout_count
+        FROM users u
+        LEFT JOIN scans s ON u.id = s.user_id
+        WHERE strftime('%m', s.timestamp) = ? AND strftime('%Y', s.timestamp) = ?
+        GROUP BY u.id
+    ''', (f'{month:02}', f'{year}')).fetchall()
+
+    conn.close()
+
+    return render_template('index.html', users=users, month=month, year=year)
+
+# Separate page to show QR codes
 @app.route('/qr_page')
 def qr_page():
-    qr_codes = [
-        {"name": "John Doe", "url": "/qr/john_doe_qr.png"},
-        {"name": "Jane Doe", "url": "/qr/jane_doe_qr.png"}
-    ]
-    return render_template('qr_page.html', qr_codes=qr_codes)
+    conn = sqlite3.connect('workout_tracker.db')
+    cursor = conn.cursor()
+
+    # Fetch all users
+    users = cursor.execute('SELECT id, name FROM users').fetchall()
+    conn.close()
+
+    return render_template('qr_page.html', users=users)
+
+# Separate page to display the chart
+@app.route('/chart_page')
+def chart_page():
+    conn = sqlite3.connect('workout_tracker.db')
+    cursor = conn.cursor()
+
+    # Fetch users and their workout counts for the current month
+    month = datetime.now().month
+    year = datetime.now().year
+    users = cursor.execute('''
+        SELECT u.id, u.name, COUNT(s.id) as workout_count
+        FROM users u
+        LEFT JOIN scans s ON u.id = s.user_id
+        WHERE strftime('%m', s.timestamp) = ? AND strftime('%Y', s.timestamp) = ?
+        GROUP BY u.id
+    ''', (f'{month:02}', f'{year}')).fetchall()
+
+    conn.close()
+
+    return render_template('chart_page.html', users=users, month=month, year=year)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
-
