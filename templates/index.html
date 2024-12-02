@@ -27,7 +27,7 @@
   <div class="user-card">
     <div class="user-info">
       <h3>{{ user[1] }}</h3> <!-- user[1] is the name -->
-      <img src="{{ url_for('static', filename='qr/' + user[1].lower() + '_qr.png') }}" alt="QR Code">
+       <img src="{{ url_for('serve_qr', filename=user[1] + '_qr.png') }}" alt="QR code for {{ user[1] }}">
       <p>Workouts: {{ user[2] }}</p> <!-- user[2] is the workout count -->
     </div>
 <form action="{{ url_for('delete_user', user_id=user[0]) }}" method="POST" class="delete-form">
