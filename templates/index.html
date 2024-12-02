@@ -18,13 +18,17 @@
 
     <!-- Grid Layout for Users -->
     <div class="user-grid">
-        {% for user in users %}
-        <div class="user-card">
-            <h3>{{ user[1] }}</h3> <!-- User's name -->
-            <img src="{{ url_for('serve_qr', filename=user[1] + '_qr.png') }}" alt="QR code for {{ user[1] }}">
-            <p><strong>{{ user[2] }}</strong> workouts this month</p> <!-- Workout count -->
-        </div>
-        {% endfor %}
+        {% if users %}
+            {% for user in users %}
+            <div class="user-card">
+                <h3>{{ user[1] }}</h3> <!-- User's name -->
+                <img src="{{ url_for('serve_qr', filename=user[1] + '_qr.png') }}" alt="QR code for {{ user[1] }}">
+                <p><strong>{{ user[2] }}</strong> workouts this month</p> <!-- Workout count -->
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No users found for this month.</p>
+        {% endif %}
     </div>
 </div>
 
