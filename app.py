@@ -49,32 +49,27 @@ def add_user():
 # Endpoint for scanning QR codes
 @app.route('/scan/<int:user_id>', methods=['GET'])
 def scan(user_id):
-    conn = sqlite3.connect('workout_tracker.db')
-    cursor = conn.cursor()
+    try:
+        conn = sqlite3.connect('workout_tracker.db')
+        cursor = conn.cursor()
 
-    # Check if the user exists
-    user = cursor.execute('SELECT * FROM users WHERE id = ?', (user_id,)).fetchone()
-    if not user:
+        # Check if the user exists
+        user = cursor.execute('SELECT * FROM users WHERE id = ?', (user_id,)).fetchone()
+        if not user:
+            conn.close()
+            return "User not found", 404
+
+        # Log the scan (record a timestamp for the workout)
+        cursor.execute('INSERT INTO scans (user_id) VALUES (?)', (user_id,))
+        conn.commit()
         conn.close()
-        return "User not found", 404
 
-    # Log the scan (record a timestamp for the workout)
-    cursor.execute('INSERT INTO scans (user_id) VALUES (?)', (user_id,))
-    # Increment monthly count
-    month, year = timestamp.month, timestamp.year
-    cursor.execute('''
-        INSERT INTO monthly_counts (user_id, month, year, count)
-        VALUES (?, ?, ?, 1)
-        ON CONFLICT(user_id, month, year)
-        DO UPDATE SET count = count + 1
-    ''', (user_id, month, year))
+        # Respond to the scan (can be a simple message or redirect)
+        return f"Workout logged for {user[1]}!", 200
 
-    conn.commit()
-    conn.close()
-    # Respond to the scan (can be a simple message or redirect)
-    return f"Workout logged for {user[1]}!", 200
-    return jsonify({'message': 'Scan recorded', 'user': user_name, 'time': str(timestamp)})
-
+    except Exception as e:
+        print(f"Error: {e}")  # Log the error message to the console
+        return "Internal Server Error", 500
 # Home page with users and their information
 @app.route('/')
 def home():
