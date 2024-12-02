@@ -66,6 +66,9 @@ def home():
 
     conn.close()
 
+ # Print the users list to the terminal
+    print(users)
+    
     return render_template('index.html', users=users)
 
 # Separate page to show the QR codes
