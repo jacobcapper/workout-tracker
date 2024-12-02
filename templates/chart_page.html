@@ -2,10 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Workout Chart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+
+<div class="container">
+    <div class="navbar">
+        <a href="/">Home</a>
+        <a href="/qr_page">QR Codes</a>
+    </div>
+
     <h1>Workout Tracker - Month {{ month }} / {{ year }}</h1>
 
     <!-- Chart.js Chart -->
@@ -34,8 +43,7 @@
             }
         });
     </script>
+</div>
 
-    <br>
-    <a href="/">Back to Home</a> | <a href="/qr_page">View QR Codes</a>
 </body>
 </html>
