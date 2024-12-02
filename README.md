@@ -11,6 +11,18 @@ A simple workout tracker using QR codes.
 
 ---
 
+## 💻 Installation
+
+Clone the repository to your local machine using Git:
+
+```bash
+git clone https://github.com/jacobcapper/workout-tracker.git
+```
+Navigate into the project directory:
+```bash
+cd workout-tracker
+```
+
 ## ⚙️ Setup Instructions
 
 ### 🛠️ Database Initialization
