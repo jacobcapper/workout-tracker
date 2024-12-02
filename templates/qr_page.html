@@ -2,9 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Codes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
+
+<div class="container">
+    <div class="navbar">
+        <a href="/">Home</a>
+        <a href="/chart_page">Workout Chart</a>
+    </div>
+
     <h1>QR Codes for Users</h1>
     <ul>
         {% for user in users %}
@@ -15,8 +24,7 @@
         </li>
         {% endfor %}
     </ul>
+</div>
 
-    <br>
-    <a href="/">Back to Home</a> | <a href="/chart_page">View Chart</a>
 </body>
 </html>
