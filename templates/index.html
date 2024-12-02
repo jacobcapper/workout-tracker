@@ -5,56 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Workout Tracker</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
 <div class="container">
     <div class="navbar">
         <a href="/">Home</a>
-        <a href="/qr_page">QR Codes</a>
         <a href="/chart_page">Workout Chart</a>
     </div>
 
-    <h1>Workout Tracker - Month {{ month }} / {{ year }}</h1>
+    <h1>Workout Tracker</h1>
 
-    <!-- Chart.js Chart -->
-    <canvas id="workoutChart" width="400" height="200"></canvas>
-    <script>
-        var ctx = document.getElementById('workoutChart').getContext('2d');
-        var workoutChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: [{% for user in users %}'{{ user[1] }}'{% if not loop.last %}, {% endif %}{% endfor %}],
-                datasets: [{
-                    label: 'Workouts Completed',
-                    data: [{% for user in users %}{{ user[2] }}{% if not loop.last %}, {% endif %}{% endfor %}],
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
-
-    <h2>Users and QR Codes</h2>
-    <ul>
+    <!-- Grid Layout for Users -->
+    <div class="user-grid">
         {% for user in users %}
-        <li>
-            <strong>{{ user[1] }}</strong>: {{ user[2] }} workouts
-            <br>
+        <div class="user-card">
+            <h3>{{ user[1] }}</h3> <!-- User's name -->
             <img src="{{ url_for('serve_qr', filename=user[1] + '_qr.png') }}" alt="QR code for {{ user[1] }}">
-        </li>
+            <p><strong>{{ user[2] }}</strong> workouts this month</p> <!-- Workout count -->
+        </div>
         {% endfor %}
-    </ul>
+    </div>
 </div>
 
 </body>
