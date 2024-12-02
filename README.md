@@ -39,7 +39,8 @@ cd workout-tracker
 
 ### 🏃 Automatic Setup
 ```bash
-install.sh
+chmod +x install.sh
+./install.sh
 ```
 
 ### 🐌 Manual Setup
