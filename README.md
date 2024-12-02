@@ -37,6 +37,12 @@ cd workout-tracker
 
 ## ⚙️ Setup Instructions
 
+### 🏃 Automatic Setup
+```bash
+install.sh
+```
+
+
 ### 🛠️ Database Initialization
 Initialize the SQLite database by running:
 
