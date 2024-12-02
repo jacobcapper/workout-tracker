@@ -68,6 +68,19 @@ def home():
 
     return render_template('index.html', users=users)
 
+# Separate page to show the QR codes
+@app.route('/qr_page')
+def qr_page():
+    conn = sqlite3.connect('workout_tracker.db')
+    cursor = conn.cursor()
+
+    # Fetch all users
+    users = cursor.execute('SELECT id, name FROM users').fetchall()
+
+    conn.close()
+
+    return render_template('qr_page.html', users=users)
+
 # Separate page to show the chart
 @app.route('/chart_page')
 def chart_page():
