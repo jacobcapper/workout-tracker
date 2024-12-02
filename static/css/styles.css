@@ -56,48 +56,29 @@ a:hover {
     color: #ecf0f1;
 }
 
-/* Cards for QR Codes */
-ul {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
+/* User Grid Layout */
+.user-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
-}
-
-li {
-    background: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    border-radius: 8px;
-    width: 200px;
-    text-align: center;
-}
-
-li img {
-    width: 150px;
-    height: 150px;
-    margin-top: 10px;
-}
-
-/* Chart */
-canvas {
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
 }
 
-/* Buttons */
-button {
-    padding: 10px 20px;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
+.user-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
 }
 
-button:hover {
-    background-color: #2980b9;
+.user-card img {
+    width: 150px;
+    height: 150px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
+
+.user-card h3 {
+    font-size: 18px;
+    margin-bottom
