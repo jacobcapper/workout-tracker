@@ -46,6 +46,11 @@ python3 init_db.py
 
 🖼️ Generate QR Codes
 
+Create the static/qr/ Directory:
+```bash
+mkdir -p static/qr
+```
+
 Generate user-specific QR codes with:
 ```bash
 python3 qr_generator.py
