@@ -128,5 +128,32 @@ def chart_page():
 
     return render_template('chart_page.html', users=users, month=month, year=year)
 
+@app.route('/delete_user/<int:user_id>', methods=['POST'])
+def delete_user(user_id):
+    conn = sqlite3.connect('workout_tracker.db')
+    cursor = conn.cursor()
+
+    try:
+        # Delete the user from the users table
+        cursor.execute('DELETE FROM users WHERE id = ?', (user_id,))
+        
+        # Optionally, delete the user’s QR code image file from the server
+        import os
+        user_name = cursor.execute('SELECT name FROM users WHERE id = ?', (user_id,)).fetchone()[0]
+        qr_code_path = f"static/qr/{user_name}_qr.png"
+        if os.path.exists(qr_code_path):
+            os.remove(qr_code_path)
+
+        conn.commit()
+    except Exception as e:
+        print(f"Error deleting user: {e}")
+        return "Error deleting user", 500
+    finally:
+        conn.close()
+
+    # Redirect back to the home page after deletion
+    return redirect(url_for('home'))
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
