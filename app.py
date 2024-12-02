@@ -47,18 +47,7 @@ def scan_qr():
 
     return jsonify({'message': 'Scan recorded', 'user': user_name, 'time': str(timestamp)})
 
-# View scan history
-@app.route('/history/<int:user_id>')
-def view_history(user_id):
-    conn = sqlite3.connect('workout_tracker.db')
-    cursor = conn.cursor()
-
-    scans = cursor.execute('SELECT timestamp FROM scans WHERE user_id = ?', (user_id,)).fetchall()
-    conn.close()
-
-    return jsonify({"history": [scan[0] for scan in scans]})
-
-# Home page with workout chart and QR codes summary
+# Home page with users and their information
 @app.route('/')
 def home():
     conn = sqlite3.connect('workout_tracker.db')
@@ -77,21 +66,9 @@ def home():
 
     conn.close()
 
-    return render_template('index.html', users=users, month=month, year=year)
+    return render_template('index.html', users=users)
 
-# Separate page to show QR codes
-@app.route('/qr_page')
-def qr_page():
-    conn = sqlite3.connect('workout_tracker.db')
-    cursor = conn.cursor()
-
-    # Fetch all users
-    users = cursor.execute('SELECT id, name FROM users').fetchall()
-    conn.close()
-
-    return render_template('qr_page.html', users=users)
-
-# Separate page to display the chart
+# Separate page to show the chart
 @app.route('/chart_page')
 def chart_page():
     conn = sqlite3.connect('workout_tracker.db')
