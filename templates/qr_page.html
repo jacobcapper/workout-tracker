@@ -1,17 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Family QR Codes</title>
+    <meta charset="UTF-8">
+    <title>QR Codes</title>
 </head>
 <body>
-    <h1>Family QR Codes</h1>
+    <h1>QR Codes for Users</h1>
     <ul>
-        {% for qr in qr_codes %}
+        {% for user in users %}
         <li>
-            <strong>{{ qr.name }}</strong>: 
-            <img src="{{ qr.url }}" alt="QR Code">
+            <strong>{{ user[1] }}</strong>
+            <br>
+            <img src="{{ url_for('serve_qr', filename=user[1] + '_qr.png') }}" alt="QR code for {{ user[1] }}">
         </li>
         {% endfor %}
     </ul>
+
+    <br>
+    <a href="/">Back to Home</a> | <a href="/chart_page">View Chart</a>
 </body>
 </html>
