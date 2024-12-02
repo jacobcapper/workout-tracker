@@ -47,29 +47,19 @@ def add_user():
 
 
 # Endpoint for scanning QR codes
-@app.route('/scan', methods=['POST'])
-def scan_qr():
-    data = request.json
-    qr_code = data.get('qr_code')
-
-    if not qr_code:
-        return jsonify({'error': 'QR code is required'}), 400
-
+@app.route('/scan/<int:user_id>', methods=['GET'])
+def scan(user_id):
     conn = sqlite3.connect('workout_tracker.db')
     cursor = conn.cursor()
 
-    # Find user by QR code
-    user = cursor.execute('SELECT id, name FROM users WHERE qr_code = ?', (qr_code,)).fetchone()
+    # Check if the user exists
+    user = cursor.execute('SELECT * FROM users WHERE id = ?', (user_id,)).fetchone()
     if not user:
-        return jsonify({'error': 'Invalid QR code'}), 404
+        conn.close()
+        return "User not found", 404
 
-    user_id = user[0]
-    user_name = user[1]
-    timestamp = datetime.now()
-
-    # Log scan
+    # Log the scan (record a timestamp for the workout)
     cursor.execute('INSERT INTO scans (user_id) VALUES (?)', (user_id,))
-    
     # Increment monthly count
     month, year = timestamp.month, timestamp.year
     cursor.execute('''
@@ -81,7 +71,8 @@ def scan_qr():
 
     conn.commit()
     conn.close()
-
+    # Respond to the scan (can be a simple message or redirect)
+    return f"Workout logged for {user[1]}!", 200
     return jsonify({'message': 'Scan recorded', 'user': user_name, 'time': str(timestamp)})
 
 # Home page with users and their information
