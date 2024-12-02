@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Family QR Codes</title>
+</head>
+<body>
+    <h1>Family QR Codes</h1>
+    <ul>
+        {% for qr in qr_codes %}
+        <li>
+            <strong>{{ qr.name }}</strong>: 
+            <img src="{{ qr.url }}" alt="QR Code">
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
