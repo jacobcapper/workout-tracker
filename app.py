@@ -9,12 +9,10 @@ app = Flask(__name__)
 def serve_qr(filename):
     return send_from_directory('static/qr', filename)
 
-# Add a route for adding new users
 @app.route('/add_user', methods=['GET', 'POST'])
 def add_user():
     if request.method == 'POST':
         name = request.form.get('name')
-        qr_code = f"{name.lower()}_qr_code"  # Generate a simple QR code name
         
         if not name:
             return "Name is required", 400
@@ -23,20 +21,30 @@ def add_user():
         cursor = conn.cursor()
 
         try:
-            cursor.execute('INSERT INTO users (name, qr_code) VALUES (?, ?)', (name, qr_code))
+            # Insert the user and get their assigned ID
+            cursor.execute('INSERT INTO users (name, qr_code) VALUES (?, ?)', (name, ''))
+            user_id = cursor.lastrowid
+            
+            # Generate the URL for the user's QR code
+            qr_code_url = f"http://192.168.1.23:5000/scan/{user_id}"
+
+            # Update the user's QR code field in the database
+            cursor.execute('UPDATE users SET qr_code = ? WHERE id = ?', (qr_code_url, user_id))
             conn.commit()
+
+            # Generate and save the QR code
+            import qrcode
+            img = qrcode.make(qr_code_url)
+            img.save(f"static/qr/{name}_qr.png")
+
         except sqlite3.IntegrityError:
             return "User already exists or QR code conflict", 400
         finally:
             conn.close()
 
-        # Generate QR code for the user
-        import qrcode
-        img = qrcode.make(qr_code)
-        img.save(f"static/qr/{name}_qr.png")
-
         return redirect(url_for('home'))
     return render_template('add_user.html')
+
 
 # Endpoint for scanning QR codes
 @app.route('/scan', methods=['POST'])
